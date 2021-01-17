@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>tree</title>
+    <script src="/s/jquery-3.5.1.min.js"></script>
+</head>
+
+<body>
+    <h1>Upload tar.gz file and see content</h1>
+    <input id="archive" type="file" onchange="Upload(this)">
+    <div id="tree" style="white-space: pre-line"></div>
+    <script type="text/javascript">
+        async function Upload(form) {
+            let formData = new FormData();
+            let file = form.files[0];
+
+            formData.append("file", file);
+
+            let r = await fetch('/tree', { method: "PUT", body: formData });
+            if (r.ok) {
+                let text = await r.text();
+                $('#tree').text(text);
+            } else {
+                console.log('HTTP bad response code:', r.status);
+            }
+
+        }
+    </script>
+</body>
+</html>
